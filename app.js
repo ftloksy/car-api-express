@@ -30,9 +30,12 @@
 // Import required modules
 import express from 'express';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import _ from 'lodash';
+
+dotenv.config();
 
 // Define the location of the database file and server port
 const databaseFile = process.env.DATABASE || './src/assets/cars.json';

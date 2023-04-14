@@ -1,3 +1,10 @@
 {
-  "cars": [ ]
+  "cars": [
+    {
+      "id": 1,
+      "make": "Honda",
+      "model": "Civic",
+      "seats": 5
+    }
+  ]
 }
