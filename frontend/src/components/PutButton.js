@@ -15,8 +15,6 @@ class PutButton extends Component {
 
   render() {
     const { carId }  = this.props ; // Replace with your paramId
-    console.log("carId: ");
-    console.log(carId);
     return (
       <button onClick={() => this.handleClick(carId)}>Update</button>
     );

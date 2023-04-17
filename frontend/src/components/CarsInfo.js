@@ -29,16 +29,22 @@ class CarsInfo extends Component {
   }
 
   fetchMessages() {
-    fetch('/api').then(response => {
-      if (!response.ok){
-        throw Error(response.statusText);
-      }
-      return response.json();
-    }).then(messages => {
-      this.setState({ messages: messages.cars });
-    }).catch(error => {
-      console.log('Fetch error:', error);
-    });
+    setTimeout( () => {
+      fetch('/api')
+        .then(response => {
+          if (!response.ok){
+            throw Error(response.statusText);
+          }
+          response.json().then(messages => {
+            const msg = messages.cars;
+            this.setState({ messages: msg });
+          });
+        }).catch(error => {
+          console.log('Fetch error:', error);
+        }) 
+      }, 3000);
+      
+    //this.setState({ messages: messages.cars });
   };
   
   async updatePutInput(model, make, seats, id) {

@@ -5,6 +5,8 @@ class PostForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // For debug.
+      messages: [],
       model: "",
       make: "",
       seats: "",
@@ -12,6 +14,7 @@ class PostForm extends Component {
     };
     this.handleInputSubmit = this.handleInputSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.endPutAction = this.endPutAction.bind(this);
   }
 
   componentDidMount() {
@@ -19,50 +22,67 @@ class PostForm extends Component {
     this.setState({ model, make, seats, id });
   }
 
-  //componentDidUpdate() {
-    //const {model, make, seats, id} = this.props;
-    //this.setState({ model, make, seats, id });
-  //}
-
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
 
-  //shouldComponentUpdate(nextProps, nextState) {
-    //// Only update if the count value changes
-    //console.log('nexState.model: ' + nextState.model
-        //+ 'thisState.seats: ' + this.state.seats);
-
-    //return   nextState.model !== this.state.model
-          //|| nextState.make !== this.state.make
-          //|| nextState.seats !== this.state.seats ;
+  //handleClick(paramId) {
+    //fetch(`/cars/${paramId}`, {
+      //method: 'DELETE',
+      //headers: {
+        //'Content-Type': 'application/json'
+      //}
+    //}).then(response => {
+      //if (!response.ok){
+        //throw Error(response.statusText);
+      //};
+    //}).then(() => {
+      //this.props.onFetchMessages();
+    //}).catch(error => {
+      //console.log('Fetch error:', error);
+    //});
   //}
 
-//  async handleInputSubmit(event, id) {
-  async handleInputSubmit(event) {
+
+  handleInputSubmit(event) {
     event.preventDefault();
     const { model, make, seats, id } = this.state;
     
     if (!id) {
-      const response = await fetch('/cars', {
+      fetch('/cars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model, make, seats })
+      }).then(response => {
+        if (!response.ok){
+          throw Error(response.statusText);
+        };
+      }).then(() => {
+        this.endPutAction()
+      }).catch(error => {
+        console.log('Fetch error:', error);
       });
-      console.log(response);
     } else {
-      const response = await fetch(`/cars/${id}`, { 
+      fetch(`/cars/${id}`, { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model, make, seats, id })
+      }).then(response => {
+        if (!response.ok){
+          throw Error(response.statusText);
+        };
+      }).then(() => {
+        this.endPutAction()
+      }).catch(error => {
+        console.log('Fetch error:', error);
       });
-      console.log(response);
     }
-
-    this.props.onFetchMessages()
+  }
+  
+  endPutAction() {
+    this.props.onFetchMessages();
     this.setState({ model: "", make: "", seats: "", id: 0 });
-
   }
 
   render() {

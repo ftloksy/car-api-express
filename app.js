@@ -171,7 +171,7 @@ app.delete('/cars/:id', (req, res) => {
         }
       });
     } else {
-      res.status(404).send('Internal Server Error.');
+      res.status(404).send('Delete Internal Server Error.');
     }
   });
 });
