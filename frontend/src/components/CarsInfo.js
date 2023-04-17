@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DeleteButton from './DeleteButton';
 import PostForm from './PostForm';
 import PutButton from './PutButton';
+import AddButton from './AddButton';
 
 class CarsInfo extends Component {
   constructor(props) {
@@ -70,7 +71,10 @@ class CarsInfo extends Component {
             <th>model</th>
             <th>seats</th>
             <th></th>
-            <th></th>
+            <th>
+              <AddButton onAddRecord={() => this.updatePutInput(
+                      "", "", "", 0)}/>
+            </th>
           </tr>
           {messages.map(message => (
             <tr key={message.id}>
