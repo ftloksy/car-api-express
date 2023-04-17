@@ -128,9 +128,9 @@ app.post('/cars', (req, res) => {
         db.data ||= { cars: [] };
         db.data.cars.push(sendRes.car);
       }).then(() => {
-        db.write();
-      }).then(() => {
-        res.status(201).send(JSON.stringify(sendRes));
+        db.write().then(() => {
+          res.status(201).send(JSON.stringify(sendRes));
+        });
       });
     });
 
