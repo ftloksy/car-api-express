@@ -9,7 +9,7 @@
     {
       "id": 7,
       "make": "Sky",
-      "model": "CoolBlueSky",
+      "model": "CoolGreyBlueSky",
       "seats": "2"
     },
     {
@@ -51,7 +51,7 @@
     {
       "id": 25,
       "make": "Tommy",
-      "model": "ModelRoad",
+      "model": "ModelMaverlRoad",
       "seats": "5"
     },
     {
@@ -73,22 +73,10 @@
       "seats": "5"
     },
     {
-      "id": 30,
-      "make": "Lok",
-      "model": "flyRock",
-      "seats": "5"
-    },
-    {
       "id": 31,
       "make": "Frankie",
       "model": "GoHoPromise",
       "seats": "9"
-    },
-    {
-      "id": 32,
-      "make": "Frankie",
-      "model": "GoBugAWay",
-      "seats": "2"
     },
     {
       "id": 34,
@@ -107,6 +95,24 @@
       "make": "Frankie",
       "model": "FoundBug",
       "seats": "9"
+    },
+    {
+      "id": 38,
+      "make": "Frankie",
+      "model": "DotDotWalk",
+      "seats": "7"
+    },
+    {
+      "id": 39,
+      "make": "Tommy",
+      "model": "StrangeWorld",
+      "seats": "5"
+    },
+    {
+      "id": 40,
+      "make": "Many",
+      "model": "GoldFishRope",
+      "seats": "5"
     }
   ]
 }

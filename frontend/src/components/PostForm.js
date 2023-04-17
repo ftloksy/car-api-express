@@ -1,4 +1,43 @@
-
+/**
+ * This is a React class component that handles the form for
+ * adding or updating car information.
+ *
+ * Props:
+ *
+ *   model: the current model name of the car
+ *   make: the current make of the car
+ *   seats: the current number of seats of the car
+ *   id: the ID of the car to be updated, if it exists
+ *
+ * State:
+ *
+ *   messages: an array for holding any error messages or logs
+ *   model: the model name of the car
+ *   make: the make of the car
+ *   seats: the number of seats of the car
+ *   id: the ID of the car to be updated, if it exists
+ *
+ * Methods:
+ *
+ *   handleInputSubmit(event): 
+ *       submits the form data to the server
+ *       using a POST or PUT request
+ *   handleInputChange(event):
+ *       updates the state when any input field changes
+ *   endPutAction():
+ *       a helper function that is called after a PUT request
+ *       to reset the state and update the messages array
+ *
+ * Render:
+ *
+ *   A form that includes input fields for model,
+ *   make, and seats, along with labels for each field
+ *   If the "id" prop is truthy, the form header says
+ *   "Update the no. {id} record.",
+ *   otherwise it says "Add Car Information."
+ *   A submit button that triggers
+ *   the handleInputSubmit() method when clicked
+ */
 import React, { Component } from 'react';
 
 class PostForm extends Component {
@@ -26,24 +65,6 @@ class PostForm extends Component {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
-
-  //handleClick(paramId) {
-    //fetch(`/cars/${paramId}`, {
-      //method: 'DELETE',
-      //headers: {
-        //'Content-Type': 'application/json'
-      //}
-    //}).then(response => {
-      //if (!response.ok){
-        //throw Error(response.statusText);
-      //};
-    //}).then(() => {
-      //this.props.onFetchMessages();
-    //}).catch(error => {
-      //console.log('Fetch error:', error);
-    //});
-  //}
-
 
   handleInputSubmit(event) {
     event.preventDefault();
@@ -93,26 +114,17 @@ class PostForm extends Component {
         { isPut ? <h1>Update the no. {id} record.</h1> : <h1>Add Car Information.</h1> }
         <label>Model: </label>
         <input
-          type="text" 
-          value={model} 
-          id="modelId" 
-          name="model" 
+          type="text" value={model} id="modelId" name="model" 
           onChange={this.handleInputChange}
           /><br/>
         <label>Make: </label>
         <input
-          type="text"
-          value={make}
-          id="makeId"
-          name="make"
+          type="text" value={make} id="makeId" name="make"
           onChange={this.handleInputChange}
           /><br/>
         <label>Seats: </label>
         <input
-          type="text"
-          value={seats}
-          id="seatsId"
-          name="seats"
+          type="text" value={seats} id="seatsId" name="seats"
           onChange={this.handleInputChange}
           /><br/>
         <input type="submit" value="Submit" />
