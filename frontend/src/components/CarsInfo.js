@@ -61,6 +61,9 @@ class CarsInfo extends Component {
       // A number for the number of seats in the car being edited
       putSeats: "",
 
+      // A string for the car Image Url being edited
+      putImageUrl: "",
+
       // An ID for the car being edited
       putId: 0,
 
@@ -78,6 +81,9 @@ class CarsInfo extends Component {
 
         // A number for the number of seats in the new car
         seats=""
+
+        // A string for the image url of the new car
+        imageurl=""
 
         /**
          * An ID for the new car, 
@@ -145,7 +151,7 @@ class CarsInfo extends Component {
   };
 
   // Lifecycle method that runs before the component unmounts
-  componentWillUmnount() {
+  componentWillUnmount() {
     
     // Clear the fetch and loading timeout
     clearTimeout(this.fetchTimeout);
@@ -159,7 +165,7 @@ class CarsInfo extends Component {
    *  model, make, seats, and id -
    *  which represent the values of the car being edited.
    */
-  async updatePutInput(model, make, seats, id) {
+  async updatePutInput(model, make, seats, imageurl, id) {
     
     /**
      * It first sets the putModel, putMake, putSeats,
@@ -174,6 +180,7 @@ class CarsInfo extends Component {
       putMake: make,
       putSeats: seats,
       putId: id,
+      putImageUrl: imageurl,
       
       /**
        * It then sets the postForm state to null 
@@ -191,6 +198,7 @@ class CarsInfo extends Component {
           make={make}
           model={model}
           seats={seats}
+          imageurl={imageurl}
           id={id} />
         });
      });
@@ -208,10 +216,11 @@ class CarsInfo extends Component {
             <th>make</th>
             <th>model</th>
             <th>seats</th>
+            <th>image</th>
             <th></th>
             <th>
               <AddButton onAddRecord={() => this.updatePutInput(
-                      "", "", "", 0)}/>
+                      "", "", "", "", 0)}/>
             </th>
           </tr>
           {messages.map(message => (
@@ -220,12 +229,13 @@ class CarsInfo extends Component {
               <td>{message.make}</td>
               <td>{message.model}</td>
               <td>{message.seats}</td>
+              <td>{message.imageurl}</td>
               <td><DeleteButton carId={message.id} 
                   onFetchMessages={this.fetchMessages}  /></td>
               <td><PutButton carId={message.id} 
                   onInputRecord={() => this.updatePutInput(
                     message.model, message.make, 
-                    message.seats, message.id)} 
+                    message.seats, message.imageurl, message.id)} 
                   /></td>
             </tr>
           ))}

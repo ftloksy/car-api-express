@@ -33,6 +33,9 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import _ from 'lodash';
 
 dotenv.config();
@@ -46,8 +49,26 @@ const app = express();
 const adapter = new JSONFile(databaseFile);
 const db = new Low(adapter);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Use body-parser to parse request bodies as JSON
 app.use(bodyParser.json());
+
+// Serve the image
+app.get('/image/:filename', (req, res) => {
+
+  // Get the filename parameter from the URL
+  const filename = req.params.filename;
+
+  /**
+   * Replace the file directory with the actual directory
+   * where your images are stored.
+   */
+  const imagePath = path.join(__dirname, 'images', filename);
+
+  res.sendFile(imagePath);
+});
 
 // Define function to get a car by its ID from the database
 const getCarById = async (id) => {
@@ -89,9 +110,10 @@ app.post('/cars', (req, res) => {
   const carMake = req.body.make;
   const carModel = req.body.model;
   const carSeats = req.body.seats;
+  const carImageUrl = req.body.imageurl;
 
   // Check that all required properties are present
-  if ( carMake && carModel && carSeats) {
+  if ( carMake && carModel && carSeats && carImageUrl) {
 
     // find the max id in the cars database .
     const maxCarId = db.read().then(() => {
@@ -120,7 +142,8 @@ app.post('/cars', (req, res) => {
           id: value + 1,  
           make: carMake, 
           model: carModel, 
-          seats: carSeats 
+          seats: carSeats,
+          imageurl: carImageUrl
           }};
 
       // Add the new car to the database
@@ -191,6 +214,7 @@ app.put('/cars/:id', (req, res) => {
   const carModel = req.body.model;
   const carSeats = req.body.seats;
   const paramId = parseInt(req.params.id);
+  const carImageUrl = req.body.imageurl;
 
   /**
    * If the car is found,
@@ -204,6 +228,9 @@ app.put('/cars/:id', (req, res) => {
       };
       if (carSeats) {
         targetCar.seats = carSeats ;
+      };
+      if (carImageUrl) {
+        targetCar.imageurl = carImageUrl ;
       };
 
       /**

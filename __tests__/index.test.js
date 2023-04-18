@@ -87,6 +87,7 @@ describe('POST /cars', () => {
     const car = {
       model: 'Civic',
       make: 'Honda',
+      imageurl: '/public/images/honda.jpg',
       seats: 5
     };
 
@@ -119,6 +120,7 @@ describe('POST /cars', () => {
           expect(returnJson.car.make).to.be.equal(car.make);
           expect(returnJson.car.model).to.be.equal(car.model);
           expect(returnJson.car.seats).to.be.equal(car.seats);
+          expect(returnJson.car.imageurl).to.be.equal(car.imageurl);
           expect(returnJson.car.id).to.be.equal(maxId + 1);
           done();
         });
@@ -164,6 +166,7 @@ describe('DELETE /cars/:id', () => {
     const car = {
       model: 'Civic',
       make: 'Honda',
+      imageurl: '/public/images/honda.jpg',
       seats: 5
     };
 
@@ -213,6 +216,7 @@ describe('PUT /cars/:id', () => {
     const updatedCar = {
       model: 'Civic',
       make: 'Honda',
+      imageurl: '/public/images/honda.jpg',
       seats: 4
     };
 

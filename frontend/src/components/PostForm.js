@@ -7,6 +7,7 @@
  *   model: the current model name of the car
  *   make: the current make of the car
  *   seats: the current number of seats of the car
+ *   imageurl: the current image url of the car
  *   id: the ID of the car to be updated, if it exists
  *
  * State:
@@ -15,6 +16,7 @@
  *   model: the model name of the car
  *   make: the make of the car
  *   seats: the number of seats of the car
+ *   imageurl: the image url of the car
  *   id: the ID of the car to be updated, if it exists
  *
  * Methods:
@@ -34,11 +36,13 @@
  *   make, and seats, along with labels for each field
  *   If the "id" prop is truthy, the form header says
  *   "Update the no. {id} record.",
+ *   and load the record car image when update the record.
  *   otherwise it says "Add Car Information."
  *   A submit button that triggers
  *   the handleInputSubmit() method when clicked
  */
 import React, { Component } from 'react';
+import CarImage from './CarImage';
 
 class PostForm extends Component {
   constructor(props) {
@@ -49,6 +53,7 @@ class PostForm extends Component {
       model: "",
       make: "",
       seats: "",
+      imageurl: "",
       id: 0
     };
     this.handleInputSubmit = this.handleInputSubmit.bind(this);
@@ -57,8 +62,8 @@ class PostForm extends Component {
   }
 
   componentDidMount() {
-    const {model, make, seats, id} = this.props;
-    this.setState({ model, make, seats, id });
+    const {model, make, seats, imageurl, id} = this.props;
+    this.setState({ model, make, seats, imageurl, id });
   }
 
   handleInputChange(event) {
@@ -68,19 +73,24 @@ class PostForm extends Component {
 
   handleInputSubmit(event) {
     event.preventDefault();
-    const { model, make, seats, id } = this.state;
+    const { model, make, seats, imageurl, id } = this.state;
     
     if (!id) {
       fetch('/cars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, make, seats })
+        body: JSON.stringify({ model, make, seats, imageurl })
       }).then(response => {
         if (!response.ok){
           throw Error(response.statusText);
         };
       }).then(() => {
-        this.endPutAction()
+
+        /**
+         * Wait 3 seconds and run the end helper function
+         * filesystem database is very slow.
+         */
+        this.endPostTimeout = setTimeout(this.endPutAction, 3000);
       }).catch(error => {
         console.log('Fetch error:', error);
       });
@@ -88,12 +98,18 @@ class PostForm extends Component {
       fetch(`/cars/${id}`, { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, make, seats, id })
+        body: JSON.stringify({ model, make, seats, imageurl, id })
       }).then(response => {
         if (!response.ok){
           throw Error(response.statusText);
         };
       }).then(() => {
+
+        /**
+         * Wait 3 seconds and run the end helper function
+         * filesystem database is very slow.
+         */
+        this.endPutTimeout = setTimeout(this.endPutAction, 3000);
         this.endPutAction()
       }).catch(error => {
         console.log('Fetch error:', error);
@@ -103,15 +119,26 @@ class PostForm extends Component {
   
   endPutAction() {
     this.props.onFetchMessages();
-    this.setState({ model: "", make: "", seats: "", id: 0 });
+    this.setState({ model: "", make: "", seats: "", imageurl: "", id: 0 });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.endPostTimeout);
+    clearTimeout(this.endPutTimeout);
   }
 
   render() {
-    const {model, make, seats, id} = this.state;
+    const {model, make, seats, imageurl, id} = this.state;
     const isPut = Boolean(id);
     return (
       <form onSubmit={(event) => this.handleInputSubmit(event, id)}>
-        { isPut ? <h1>Update the no. {id} record.</h1> : <h1>Add Car Information.</h1> }
+
+        { isPut ? 
+          <>
+            <CarImage urlsrc={imageurl} />
+            <h1>Update the no. {id} record.</h1>
+          </> 
+          : <h1>Add Car Information.</h1> }
         <label>Model: </label>
         <input
           type="text" value={model} id="modelId" name="model" 
@@ -125,6 +152,11 @@ class PostForm extends Component {
         <label>Seats: </label>
         <input
           type="text" value={seats} id="seatsId" name="seats"
+          onChange={this.handleInputChange}
+          /><br/>
+        <label>Image Url: </label>
+        <input
+          type="text" value={imageurl} id="imageurlId" name="imageurl"
           onChange={this.handleInputChange}
           /><br/>
         <input type="submit" value="Submit" />
