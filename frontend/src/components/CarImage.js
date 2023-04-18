@@ -24,7 +24,6 @@ class CarImage extends Component {
     fetch(this.props.urlsrc)
     
       // Converts the response to a Blob object
-      .then(blob => {
       .then(response => response.blob())
       .then(blob => {
         // Sets the Blob URL as the image source in the component's state
